@@ -8,9 +8,9 @@ The application has bugs, so develop a test plan to find them.
 
 - When launched the application should wait for http connections
 - It should support three endpoints
-> A  POST  to  /hash  should accept a password; it should return a job identifier immediately; it should then wait 5 seconds and compute the password hash. The hashing algorithm should be SHA512.
-> A  GET  to  /hash  should accept a job identifier; it should return the base64 encoded password hash for the corresponding  POST  request.
-> A  GET  to  /stats   should accept no data; it should return a JSON data structure for the total hash requests since server start and the average time of a hash request in milliseconds
+** A  POST  to  /hash  should accept a password; it should return a job identifier immediately; it should then wait 5 seconds and compute the password hash. The hashing algorithm should be SHA512.
+** A  GET  to  /hash  should accept a job identifier; it should return the base64 encoded password hash for the corresponding  POST  request.
+** A  GET  to  /stats   should accept no data; it should return a JSON data structure for the total hash requests since server start and the average time of a hash request in milliseconds
 - The software should be able to process multiple connections simultaneously.
 - The software should support a graceful shutdown request, it should allow any remaining password hashing to complete, reject any new requests, and shutdown
 
