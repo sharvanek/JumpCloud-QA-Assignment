@@ -19,7 +19,7 @@ The application has bugs, so develop a test plan to find them.
 - All stats and hashes are stored in memory, so crashes, shutdowns, and the above process lifecycle will cause data loss (to be clear this is intended and not a bug)
 - Since this is a hosted binary, you will have to detect shutdowns by checking if the previous data has been erased (Heroku will immediately restart the process after a shutdown)
 
-## Example Curl Requests and Response
+## Example Curl Requests and Responses
 - curl -X POST -H "application/json" -d '{"password":"angrymonkey"}' http://radiant-gorge-83016.herokuapp.com/hash
 > 42
 
