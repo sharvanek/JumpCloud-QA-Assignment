@@ -1,0 +1,11 @@
+As far as testing goes, I was not able to get into much of load/performance testing.
+At no point did I issue a 100 or a 1000 requests and see how the application handled
+that many requests. Furthermore, I did not do much testing in terms of headers and parameters in
+the hash endpoint or headers in the stats endpoint and would have like to have dived more
+into this area had time provided. In addition, I would have liked to have asked and tested if
+there were any validations around passwords, such as does a password have to contain 1 uppercase character,
+1 special character, and must be at least 8 characters long and see if the endpoints validated against that.
+Moreover, I would have liked to have tested passing in multiple keys in the POST response to
+the hash endpoint. I did testing around the password key, but not adding a key in addition to that one. Lastly, I would
+have like to have tested the actual error messages a bit more and see where they could have been improved from
+malformed input and Method Not Supported.

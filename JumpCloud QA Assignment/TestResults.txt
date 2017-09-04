@@ -1,0 +1,37 @@
+PASS: test_is_post_hash_successful
+PASS: test_is_get_hash_successful
+PASS: test_is_get_stats_successful
+PASS: test_is_job_identifier_returned
+FAIL: test_is_job_identifier_returned_immediately
+Job identifier not returned immediately
+Job identifier took 5.32026696205 seconds to return
+Job identifier expected to return in less than 2 seconds
+PASS: test_is_get_hash_without_job_identifier_allowed
+FAIL: test_is_password_encoded
+Expected Ecodeed Value: MzRkZDBmMDBhYjYyNzlhY2EyNGQ4ZjNmNDFkZTc3MDFlMzMzMWU0NmVmNjQzNzcwNjE4ODgzOWYwYjQzNzZmZmM1MjE2YmRjY2I1YjBhMDliZWVhOGJiMzZlZjEwZjAyNzdmMzJhOGQwN2IyMDg4ZDI5NThhMGM2YTdiZTAwZDY=
+Actual Encoded Value: NN0PAKtieayiTY8/Qd53AeMzHkbvZDdwYYiDnwtDdv/FIWvcy1sKCb7qi7Nu8Q8Cd/MqjQeyCI0pWKDGp74A1g==
+FAIL: test_is_empty_string_allowed_as_password
+Empty string should not be allowed as a password
+PASS: test_is_malformed_input_post_hash_allowed
+FAIL: test_is_different_key_post_hash_allowed
+password should be the only key allowed in POST request to hash endpoint
+Passed Key: p
+FAIL: test_is_passing_empty_json_allowed
+Empty JSON should not be allowed to be passed to the hash endpoint
+PASS: test_is_stats_response_json
+PASS: test_is_TotalRequests_key
+PASS: test_is_AverageTime_key
+FAIL: test_is_post_stats_allowed
+The stats endpoint should not support POST requests
+FAIL: test_is_params_in_get_stats_request_allowed
+The stats endpoint should not support parameters in URL in GET request
+PASS: test_is_TotalRequests_incremented_successfully
+PASS: test_is_simultaneous_post_hash_successful
+PASS: test_is_simultaneous_get_hash_successful
+PASS: test_is_shutdown_successful
+PASS: test_is_remaining_password_hashing_allowed_to_complete
+PASS: test_is_new_requests_rejected_during_shutdown
+FAIL: test_is_AverageTime_calculated_correctly
+Expected Value: 5214
+Actual Value: 101277
+PASS: test_is_get_hash_with_non_existent_job_identifier_allowed

@@ -1,0 +1,14 @@
+The following libraries were used:
+- multiprocessing
+- json
+- hashlib
+- base64
+- time
+- requests
+
+Useful links to libraries used:
+- Requests Library
+-- https://media.readthedocs.org/pdf/requests/latest/requests.pdf
+-- http://docs.python-requests.org/en/master/user/quickstart/
+- Multiprocessing Library
+-- https://docs.python.org/2/library/multiprocessing.html#multiprocessing.Queue

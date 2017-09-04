@@ -1,0 +1,90 @@
+Here are the following bugs that were found:
+
+BUG:
+- Job identifier doesn't return immediately
+
+DESCRIPTION:
+In the details of the assignment, it was stated that a POST to hash
+should accept a password and it should return a job identifier immediately.
+However, is usually takes over 5 seconds to return the job identifier. Furthermore,
+it seems that the job identifier if only returned after the hash has already been computed.
+Meaning, there does not seem to be a need to wait five seconds before using the
+job identifier to get the hash.
+
+BUG:
+- Password is Encoded and/or hashed incorrectly
+
+DESCRIPTION:
+- In the details of the assignment, it was stated that A GET to the hash endpoint should return the
+base64 encoded password hash. The GET request returns the encoded password hash; however,
+it does not match up to the expected value. Since the SHA512 hash cannot be seen, it is unsure whether
+the SHA512 or the base64 is the problem. Furthermore, it seems like the key may be used in the hashing and or
+encoding. Reason why this is suspected is because of the following example:
+
+Body Passed in POST requet to hash: {"password": "angrymonkey"}
+Encoded Password Hash: NN0PAKtieayiTY8/Qd53AeMzHkbvZDdwYYiDnwtDdv/FIWvcy1sKCb7qi7Nu8Q8Cd/MqjQeyCI0pWKDGp74A1g==
+
+Body Passed in POST requet to hash: {"p": "angrymonkey"}
+Encoded Password Hash: z4PhNX7vuL3xVChQ1m2AB9Yg5AULVxXcg/SpIdNs6c5H0NE8XYXysP+DGNKHfuwvY7kxvUdBeoGlODJ6+SfaPg==
+
+These return two different results. If only the password was being used the hashes should be indentical.
+
+BUG:
+- Empty string is allowed as a password
+
+DESCRIPTION:
+- A POST to the hash endpoint should require a password.
+
+BUG:
+- A different key in place of password can be passed in A POST to hash endpoint
+
+DESCRIPTION:
+- There should be validation in some regards as to what is passed in the body of
+the POST request to the /hash endpoint
+
+BUG:
+- Empty JSON is allowed to be passed to the hash endpoint on a POST request
+
+DESCRIPTION:
+- Empty JSON should not be allowed to be passed to the hash endpoint on a POST request.
+There should be some validation around this.
+
+BUG:
+- Stats endpoint supports POST method
+
+DESCRIPTION:
+- In the details of the assignment, it said that only three endpoints should be supported.
+There should be validation against using POST on the stats endpoint. The http error code
+should return with a 405 which is method not supported.
+
+BUG:
+- Params allowed to be passed to the stats endpoint on GET request
+
+DESCRIPTION:
+- I am not exactly sure if this is a bug. In the details of the assignment it stated
+that A GET to the stats endpoint should accept no data. I took this in terms of that
+it should not allow parameters to be passed in. Also, I am not sure if headers are allowed
+to be passed or not.
+
+BUG:
+- Average Time of a hash request is not calculated correctly
+
+DESCRIPTION:
+- In the details of the assignment it stated that average time was the average time
+of a hash request. The value that I am getting is about 5 seconds; however, the value that
+the application is returning is on average of 80 to 100 seconds or more. I am not sure if this
+is because the value is not actually recorded in milliseconds or if the formula is wrong or if
+there is something that I am missing in my formula or understanding. I only time the request of a POST
+to hash and add up all times for all posts and then divide by the number of posts.
+
+BUG:
+- Shutting down does not restart the process immediately
+
+DESCRIPTION:
+- I am not sure if this is a bug or just a lack of understanding of how long it takes
+to restart the process. In the details of the assignment it stated that Since this is a
+hosted binary, you will have to detect shutdowns by checking if the previous data has
+been erased (Heroku will immediately restart the process after a shutdown). This made it
+seem like everything would be back up and running again in a few seconds. However, it seems
+to take a long time for the restart to actually happen and actually throws a 503 error for quite
+awhile. Even when it seems like there are no on going hashings or requests.

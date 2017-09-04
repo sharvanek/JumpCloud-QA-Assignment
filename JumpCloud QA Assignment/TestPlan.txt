@@ -1,0 +1,372 @@
+Test Plan for http://radiant-gorge-83016.herokuapp.com/
+USEFUL LINKS:
+- HTTP Status Codes
+-- https://developer.mozilla.org/en-US/docs/Web/HTTP/Status
+-- http://www.restapitutorial.com/httpstatuscodes.html
+- HTTP Parameters
+-- https://www.w3schools.com/tags/ref_httpmethods.asp
+- Curl Multiple Requests
+-- https://stackoverflow.com/questions/3110444/how-to-run-multiple-curl-requests-processed-sequentially 
+
+TITLE:
+- POST Request to Hash Endpoint to Hash Password is Successful
+INTENT:
+- Make sure POST request to hash endpoint to hash password returns a successful HTTP status code
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a POST request
+-- http://radiant-gorge-83016.herokuapp.com/hash
+--- The request needs to include following JSON body
+---- {"password": "<PASSWORD_TO_BE_HASHED>"}
+VALIDATION:
+- HTTP status code that is returned is of the form 2xx
+
+TITLE:
+- GET Request to Hash Endpoint is Successful
+INTENT:
+- Make sure GET request to hash endpoint returns a successful HTTP status code
+SETUP:
+- Need to have submitted a password for hashing and a corresponding job id
+STEPS:
+- Hit the following endpoint with a GET request
+-- http://radiant-gorge-83016.herokuapp.com/hash/<JOB_ID>
+VALIDATION:
+- HTTP status code that is returned is of the form 2xx
+
+TITLE:
+- GET Request to Stats Endpoint is Successful
+INTENT:
+- Make sure GET request to stats endpoint returns a successful HTTP status code
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a GET request
+-- http://radiant-gorge-83016.herokuapp.com/stats
+VALIDATION:
+- HTTP status code that is returned is of the form 2xx
+
+TITLE:
+- POST Request to Hash Endpoint to Shutdown is Successful
+INTENT:
+- Make sure POST request to hash endpoint to shutdown returns a successful HTTP status code
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a POST request
+-- http://radiant-gorge-83016.herokuapp.com/hash
+--- The request needs to include following data
+---- shutdown
+VALIDATION:
+- HTTP status code that is returned is of the form 2xx
+
+TITLE:
+- Job Identifier Returned After Submitting POST Request to hash endpoint
+INTENT:
+- Make sure that a job identifier is returned after POST request to hash endpoint
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a POST request
+-- http://radiant-gorge-83016.herokuapp.com/hash
+--- The request needs to include following JSON body
+---- {"password": "<PASSWORD_TO_BE_HASHED>"}
+VALIDATION:
+- Job identifier is returned in response
+
+TITLE:
+- Job Identifier Returned Immediately After Submitting POST request to hash endpoint
+INTENT:
+- Make sure that the job identifier is returned quickly after submitting POST request
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a POST request
+-- http://radiant-gorge-83016.herokuapp.com/hash
+--- The request needs to include following JSON body
+---- {"password": "<PASSWORD_TO_BE_HASHED>"}
+VALIDATION:
+- Job identifier is returned in no longer than two seconds
+TO DO: Define what is meant by immediately
+
+TITLE:
+- GET Request to Hash Endpoint Should not Succeed Without a Job identifier
+INTENT:
+- Make sure that GET request to hash endpoint fails when a job identifier is not specified
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a GET request
+-- http://radiant-gorge-83016.herokuapp.com/hash
+VALIDATION
+- HTTP status code that is returned is of the form 4xx
+
+TITLE:
+- Password Hash Encoded Correctly
+INTENT:
+- Make sure that the password hash is encoded correctly
+SETUP:
+- Have submitted a successful POST request to hash endpoint and know the job identifier
+-- Shutdown or Crash has not occurred since then
+--- If it has, just submit a successful POST request to hash endpoint and get another job identifier
+STEPS:
+- Hit the following endpoint with a GET request
+-- http://radiant-gorge-83016.herokuapp.com/hash/<JOB_ID>
+--- Get the encoded password hash from the GET request
+---- Hash the submitted password using the SHA512 algorithm
+----- base64 encode the password hash
+------ Compare the encoded password hash from the GET request to the encoded password hash using the SHA512 algorithm and base64 encoder
+VALIDATION:
+- Encoded password hash from the GET request matches encoded password hash using the SHA512 algorithm and base64 encoder
+
+TITLE:
+- Empty String is not an Acceptable Password in POST request to Hash Endpoint
+INTENT:
+- Make sure that empty string is not an acceptable password in POST request to hash endpoint
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a POST request
+-- http://radiant-gorge-83016.herokuapp.com/hash
+--- The request needs to include following JSON body
+---- {"password": ""}
+VALIDATION:
+- HTTP status code that is returned is of the form 4xx
+- Error message that says a password must be passed and be non-empty
+TO DO: Define what error message should be
+
+TITLE:
+- Malformed JSON is not Allowed to be Passed in POST Request to Hash Endpoint
+INTENT:
+- Make sure that bad JSON cannot be passed in POST request to hash endpoint
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a POST request
+-- http://radiant-gorge-83016.herokuapp.com/hash
+--- The request needs to include following body
+---- "password"
+VALIDATION:
+- HTTP status code that is returned is of the form 4xx
+- Error message that says malformed input has been passed
+TO DO: Define what error message should be
+
+TITLE:
+- Key Other than password Should not be Allowed to be Passed in POST Request to Hash Endpoint
+INTENT:
+- Make sure that a different key in replace of password cannot be submitted in POST request to hash endpoint
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a POST request
+-- http://radiant-gorge-83016.herokuapp.com/hash
+--- The request needs to include following body
+---- {"password": "<PASSWORD_TO_BE_HASHED>"}
+VALIDATION:
+- HTTP status code that is returned is of the form 4xx
+- Error message says incorrect key passed
+TO DO: Define what error message should be
+
+TITLE:
+- Passing Empty JSON is not Allowed in POST Request to Hash Endpoint
+INTENT:
+- Make sure that empty JSON cannot be submitted in POST request to hash endpoint
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a POST request
+-- http://radiant-gorge-83016.herokuapp.com/hash
+--- The request needs to include following body
+---- {}
+VALIDATION
+- HTTP status code that is returned is of the form 4xx
+- Error message says passed data was empty
+TO DO: Define Error message
+
+TITLE:
+- Response After Submitting GET Request to Stats Endpoint is JSON
+INTENT:
+- Make sure that the stats endpoint sends actual JSON in response after submitting GET request
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a GET request
+-- http://radiant-gorge-83016.herokuapp.com/stats
+VALIDATION:
+- Response from stats endpoint is valid JSON
+
+TITLE:
+- Total Requests is in Response After Submitting GET Request to Stats Endpoint
+INTENT:
+- Make sure that TotalRequests is in response after submitting GET request to stats endpoint
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a GET request
+-- http://radiant-gorge-83016.herokuapp.com/stats
+VALIDATION:
+- TotalRequests is in response from stats endpoint
+
+TITLE:
+- Average Time is in Response After Submitting GET request to Stats Endpoint
+INTENT:
+- Make sure that AverageTime is in response after submitting GET request to stats endpoint
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a GET request
+-- http://radiant-gorge-83016.herokuapp.com/stats
+VALIDATION:
+- AverageTime is in response from stats endpoint
+
+TITLE:
+- Stats Endpoint does not Support POST
+INTENT:
+- Make sure that stats endpoint does not support POST requests
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a POST request
+-- http://radiant-gorge-83016.herokuapp.com/stats
+VALIDATION:
+- HTTP status code that is returned is of the form 4xx
+- Error message that says method is not supported
+TO DO: Define what error message should be
+
+TITLE:
+- GET Request on Stats Endpoint Should Accept No Data
+INTENT:
+- Make sure that stats endpoint accepts no data
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a GET request
+-- http://radiant-gorge-83016.herokuapp.com/stats?name1=value1&name2=value2
+VALIDATION:
+- HTTP status code that is returned is of the form 4xx
+- Error message that says parameters are not allowed and/or supported
+TO DO: Define error messages
+TO DO: Define if this test case is correct
+TO DO: Does this include headers as well as parameters? Or just one or the other?
+
+TITLE:
+- Total Requests is Incremented Correctly
+INTENT:
+- Make sure that TotalRequests is incremented when a POST request is submitted to the hash endpoint
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with a GET request
+-- http://radiant-gorge-83016.herokuapp.com/stats
+--- Observe the value for TotalRequests
+---- Hit the following endpoint with a POST request
+----- http://radiant-gorge-83016.herokuapp.com/hash
+------ Hit the following endpoint with a GET request
+------- http://radiant-gorge-83016.herokuapp.com/stats
+-------- Observe the value for TotalRequests
+VALIDATION:
+- The value for TotalRequests has incremented by 1
+
+TITLE:
+- Application Supports Simultaneous POST Requests to Hash Endpoint
+INTENT:
+- Make sure that the application supports simultaneous POST requests to the hash endpoint
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint multiple times simultaneously with a POST request
+-- http://radiant-gorge-83016.herokuapp.com/hash
+--- This can be done using curl
+---- Example: curl  -X POST -H "application/json" -d '{"password":"angrymonkey"}' http://radiant-gorge-83016.herokuapp.com/hash & curl -X POST -H "application/json" -d '{"password":"angrymonkey"}' http://radiant-gorge-83016.herokuapp.com/hash & curl -X POST -H "application/json" -d '{"password":"angrymonkey"}' http://radiant-gorge-83016.herokuapp.com/hash
+VALIDATION:
+- All requests have status codes of the form 2xx
+- All requests return job identifiers
+
+TITLE:
+- Application Supports Simultaneous GET Requests to Hash Endpoint
+INTENT:
+- Make sure that the application supports simultaneous GET requests to the hash endpoint
+SETUP:
+- Have submitted multiple successful POST requests to hash endpoint and know the job identifiers
+-- Shutdown or Crash has not occurred since then
+--- If it has, just submit multiple successful POST requests to hash endpoint and get several job identifiers
+STEPS:
+- Hit the following endpoint multiple times simultaneously with a GET request
+-- http://radiant-gorge-83016.herokuapp.com/hash/<JOB_ID>
+--- This can be done using curl
+---- curl http://radiant-gorge-83016.herokuapp.com/hash/<JOB_ID> & curl http://radiant-gorge-83016.herokuapp.com/hash/<JOB_ID> & curl http://radiant-gorge-83016.herokuapp.com/hash/<JOB_ID>
+VALIDATION:
+- All requests have status codes of the form 2xx
+- All requests return encoded password hashes
+
+TITLE:
+- Application allows password hashings in progress to complete once shutdown has started
+INTENT:
+- Make sure that password hashing in progress are allowed to finish once shutdown has started
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint POST request
+-- http://radiant-gorge-83016.herokuapp.com/hash
+---- The request needs to include following body
+----- {"password": "<PASSWORD_TO_BE_HASHED>"}
+------ Hit the following endpoint with POST request simultaneously
+------- http://radiant-gorge-83016.herokuapp.com/hash
+-------- The request needs to include following data
+--------- shutdown
+VALIDATION:
+- Shutdown returns status code of the form 2xx
+- Password hash request returns job identifier
+- Password hash request returns status code of the form 2xx
+
+TITLE:
+- Application Denies Any New Requests Once Shutdown has Started
+INTENT:
+- Make sure that all new requests are denied once shutdown has started
+SETUP:
+- No setup required
+STEPS:
+- Hit the following endpoint with POST request
+-- http://radiant-gorge-83016.herokuapp.com/hash
+--- The request needs to include following data
+---- shutdown
+----- Hit the following endpoint POST request once the shutdown has successfully started
+------ http://radiant-gorge-83016.herokuapp.com/hash
+------- The request needs to include following body
+-------- {"password": "<PASSWORD_TO_BE_HASHED>"}
+VALIDATION:
+- Shutdown returns status code of the form 2xx
+- Password hash returns an error status code either of the form 4xx or 5xx
+
+TITLE:
+- Average Time for Password Hash POST Requests is Calculated Correctly
+INTENT:
+- Make sure that the AverageTime for password hash POST requests is calculated correctly
+SETUP:
+- Erase all existing data by submitting a shutdown
+STEPS:
+- Hit the following endpoint POST request once the shutdown has successfully started
+-- http://radiant-gorge-83016.herokuapp.com/hash
+--- The request needs to include following body
+---- {"password": "<PASSWORD_TO_BE_HASHED>"}
+----- Time the request
+------ Repeat the above steps a few times
+------- Calculate the AverageTime by taking the time for all requests combined and dividing it by the number of requests
+-------- Compare it to the AverageTime from Stats Endpoint
+VALIDATION:
+- AverageTime from stats endpoint checks computed AverageTime
+TO DO: Check AverageTime Calculation
+
+TITLE:
+- GET Request to Hash Endpoint Should Return Error When Hit With Non Existent Job Identifier
+INTENT:
+- To make sure that the hash endpoint does not support a GET request when called with non existent job identifier
+SETUP:
+- Erase all existing data by submitting a shutdown
+STEPS:
+- Hit the following endpoint with a GET request
+-- http://radiant-gorge-83016.herokuapp.com/hash/<JOB_ID>
+VALIDATION:
+- HTTP status code that is returned is of the form 4xx
+- Error message is displayed saying job identifier does not exist
+TO DO: Define error message
